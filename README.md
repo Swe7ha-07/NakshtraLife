@@ -9,7 +9,20 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open the local URL Vite prints in the terminal. The development server is configured for `http://localhost:3000` and opens the browser automatically; if that port is busy, use the alternate URL Vite prints.
+
+To verify a production build and serve its preview:
+
+```sh
+npm run build
+npm run preview
+```
+
+The preview server is configured for `http://localhost:3000`.
+
+## Data and services
+
+This is a frontend-only demo. It does not start a separate API at port `4000`, use `PLANTCARE_API_URL`, or require a database seed command. Profile, check-ins, and recommendation feedback are stored in this browser's `localStorage`. Demo check-ins are initialized when no saved check-ins exist in the browser.
 
 ## Included in this preview
 
