@@ -13,6 +13,7 @@ Or start it from a terminal in this folder:
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
+NAKSHATRALIFE_LOCAL_PERSIST=1 \\
 .venv/bin/python -m streamlit run app.py --server.port 8501
 ```
 
@@ -33,7 +34,13 @@ Then open the local URL printed by Streamlit, normally [http://localhost:8501](h
 
 ## Data and accuracy
 
-This is a local, frontend-only demo. It does not start a separate API at port `4000`, use `PLANTCARE_API_URL`, or require a database seed command. Demo check-ins are created the first time the app runs. Profile, check-ins, and feedback are saved to `.nakshatralife_state.json` in this folder, which is excluded from Git. Keep that file to retain local demo data; remove it only if you want to reset your profile and check-ins to the demo defaults.
+This is a frontend-only demo. It does not start a separate API at port `4000`, use `PLANTCARE_API_URL`, or require a database seed command. Demo check-ins are created the first time the app runs. The included local launchers save profile, check-ins, and feedback to `.nakshatralife_state.json` in this folder, which is excluded from Git. Keep that file to retain local demo data; remove it only if you want to reset your profile and check-ins to the demo defaults. In hosted deployments, visitor data stays in that visitor's Streamlit session and is not written to a shared server file; it resets when the session ends.
+
+## Deploy a hosted demo
+
+This repository is ready for [Streamlit Community Cloud](https://share.streamlit.io/). Sign in with GitHub, choose **Create app**, select `Swe7ha-07/NakshtraLife`, branch `main`, and entrypoint `app.py`. The app needs only the root `requirements.txt`. Community Cloud will assign a shareable `*.streamlit.app` URL after deployment; replace the local link above with that URL once the app has been created. Anyone can visit a public app without starting your computer's local server.
+
+Because this GitHub repository is public, the deployed app will also be public by default. Visitor profiles, check-ins, and feedback are session-only and are not stored permanently by this demo.
 
 The birth-star and daily time calculations are estimates. Results can differ from a location-aware ephemeris or a published Panchangam, especially near a Nakshatra boundary, in places with daylight-saving changes, or under a different Panchangam convention. Tithi, Yoga, and Karana are not calculated. Palan and routine suggestions are cultural/educational reflections, not verified forecasts, medical advice, financial advice, or validated health measures.
 

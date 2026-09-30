@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -9,6 +10,9 @@ import streamlit as st
 
 APP_DIR = Path(__file__).resolve().parent
 STATE_FILE = APP_DIR / ".nakshatralife_state.json"
+# Local launchers opt into disk persistence. Hosted deployments use only
+# Streamlit session state so one visitor can never see another visitor's data.
+LOCAL_PERSISTENCE = os.environ.get("NAKSHATRALIFE_LOCAL_PERSIST") == "1"
 
 st.set_page_config(page_title="NakshatraLife Twin", page_icon="🌙", layout="wide", initial_sidebar_state="expanded")
 st.markdown("""
@@ -69,14 +73,15 @@ def demo_rows():
 
 
 def load_state():
-    if STATE_FILE.exists():
+    if LOCAL_PERSISTENCE and STATE_FILE.exists():
         try: return json.loads(STATE_FILE.read_text())
         except (OSError, json.JSONDecodeError): pass
     return {'profile':None,'checkins':demo_rows(),'feedback':{}}
 
 
 def save_state():
-    STATE_FILE.write_text(json.dumps({'profile':st.session_state.profile,'checkins':st.session_state.checkins,'feedback':st.session_state.feedback},indent=2))
+    if LOCAL_PERSISTENCE:
+        STATE_FILE.write_text(json.dumps({'profile':st.session_state.profile,'checkins':st.session_state.checkins,'feedback':st.session_state.feedback},indent=2))
 
 
 def moon_star(on_date: date, time_text: str, city_name: str):
